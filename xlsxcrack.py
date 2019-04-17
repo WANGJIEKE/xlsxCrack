@@ -55,7 +55,8 @@ def remove_password(path: str) -> None:
         # remove password inside worksheet(s)
         worksheet_root = pathlib.Path(f'{temp_dir}/{WORK_SHEETS_DIR_PATH}')
         for item in worksheet_root.iterdir():
-            result = re.match(r'^sheet(0|[1-9][0-9]*)\.xml$', str(item).rsplit('/', 1)[1])
+            # POSIX and Windows use different separator
+            result = re.match(r'^sheet(0|[1-9][0-9]*)\.xml$', str(item).rsplit(os.sep, 1)[1])
             if item.is_file() and result is not None:
                 with open(str(item), 'r') as worksheet:
                     data = worksheet.read()
