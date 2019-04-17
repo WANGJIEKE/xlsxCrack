@@ -17,7 +17,7 @@ WORK_SHEETS_DIR_PATH = 'xl/worksheets'
 
 
 def _make_copy(path: str) -> str:
-    return shutil.copy2(path, path.replace('.xlsx', '.cracked.xlsx'))
+    return shutil.copy2(path, path.replace('.xls', '.cracked.xls'))  # make it also work with .xlsm file
 
 
 def _print_error_msg(e: Exception) -> None:
@@ -38,7 +38,6 @@ def remove_password(path: str) -> None:
         # extract files to a directory
         copy_path = pathlib.Path(_make_copy(path))
         temp_dir = copy_path.parent / pathlib.Path(TMP_DIR_PATH)
-        print(temp_dir)
         temp_dir.mkdir(exist_ok=True)
         file_copy = zipfile.ZipFile(copy_path)
         file_copy.extractall(temp_dir)
@@ -57,7 +56,6 @@ def remove_password(path: str) -> None:
         worksheet_root = pathlib.Path(f'{temp_dir}/{WORK_SHEETS_DIR_PATH}')
         for item in worksheet_root.iterdir():
             result = re.match(r'^sheet(0|[1-9][0-9]*)\.xml$', str(item).rsplit('/', 1)[1])
-            print(result)
             if item.is_file() and result is not None:
                 with open(str(item), 'r') as worksheet:
                     data = worksheet.read()
