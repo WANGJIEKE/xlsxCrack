@@ -86,7 +86,7 @@ def remove_password(path: str) -> None:
     except OSError as e:
         _print_error_msg(e)
     except Exception:
-        print(f'{sys.argv[0]}: error: unknown error, see Traceback below\n', file=sys.stderr)
+        print(f'{sys.argv[0]}: error: unexpected error, see Traceback below\n', file=sys.stderr)
         raise
 
 
