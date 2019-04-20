@@ -34,6 +34,9 @@ def _parse_args() -> str:
 
 
 def remove_password(path: str) -> None:
+    if not (path.endswith('.xlsx') or path.endswith('.xlsm')):
+        print(f'{sys.argv[0]}: error: incorrect file type; only support .xlsx and .xlsm file for now', file=sys.stderr)
+        exit(1)
     try:
         # extract files to a directory
         copy_path = pathlib.Path(_make_copy(path))
