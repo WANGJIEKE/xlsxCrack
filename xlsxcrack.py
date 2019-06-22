@@ -1,7 +1,7 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Created with PyCharm
-# @Time    : 2019-04-16 01:55
-# @Author  : Tongjie Wang
+
+"""module for removing protection in .xlsx and .xlsm files"""
 
 import argparse
 import os
@@ -17,16 +17,19 @@ WORK_SHEETS_DIR_PATH = 'xl/worksheets'
 
 
 def _make_copy(path: str) -> str:
+    """make a copy of original Excel workbook"""
     return shutil.copy2(path, path.replace('.xls', '.cracked.xls'))  # make it also work with .xlsm file
 
 
 def _print_error_msg(e: Exception) -> None:
+    """basically printing error message without the huge traceback"""
     print(f'{sys.argv[0]}: error: type: {str(type(e))[8:-2]}; message: {str(e)}',
           file=sys.stderr)
     exit(1)
 
 
 def _parse_args() -> str:
+    """parsing commandline arguments"""
     parser = argparse.ArgumentParser(description='Remove .xlsx file password')
     parser.add_argument(dest='file_name', help='path to source file', type=str)
     args = parser.parse_args()
@@ -34,6 +37,12 @@ def _parse_args() -> str:
 
 
 def remove_password(path: str) -> None:
+    """
+    Remove the password of a given Microsoft Excel workbook (.xlsx and .xlsm)
+
+    @param path: a path to the file
+    @return None (but a no password version of the original file will be created)
+    """
     if not (path.endswith('.xlsx') or path.endswith('.xlsm')):
         print(f'{sys.argv[0]}: error: incorrect file type; only support .xlsx and .xlsm file for now', file=sys.stderr)
         exit(1)
@@ -86,7 +95,7 @@ def remove_password(path: str) -> None:
     except OSError as e:
         _print_error_msg(e)
     except Exception:
-        print(f'{sys.argv[0]}: error: unexpected error, see Traceback below\n', file=sys.stderr)
+        print(f'{sys.argv[0]}: error: unexpected error, see Traceback below and probably open an issue\n', file=sys.stderr)
         raise
 
 
